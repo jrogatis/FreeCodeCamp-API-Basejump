@@ -1,5 +1,52 @@
-extends layout
+doctype html
+html
 
-block content
-  h1= title
-  p Welcome to #{title}
+head
+link(href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/flatly/bootstrap.min.css", rel="stylesheet")
+link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css')
+script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
+script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js' )
+
+body
+div.container-fluid
+    block content
+        div
+            img(src="https://avatars0.githubusercontent.com/u/17405774?v=3&amp;u=25031709cd0390734f6bd82aadae7d3379ee57ed&amp;s=140")
+            div
+                a(href='mailto:jrogatis@metaconexao.com.br')
+                    i.fa.fa-envelope.fa-fw
+                a(href='https://github.com/jrogatis')
+                    i.fa.fa-github.fa-fw
+                a(href='https://br.linkedin.com/in/jrogatis')
+                    i.fa.fa-linkedin.fa-fw
+                a(href='http://codepen.io/jrogatis/')
+                    i.fa.fa-codepen.fa-fw
+                a(href='http://www.metaconexao.com.br/')
+                    i.fa.fa-wordpress.fa-fw
+
+
+            p Created by Jean Philip de Rogatis(jrogatis)
+
+        h1 FreeCodeCamp API Basejump: Image Search
+
+        h2 User stories:
+
+        p I can pass a string as a parameterand i will perform a custom search using google API.
+        p I can query the search log for the past 10 querys.
+        p To set this project you need to provide a app key and a custom search identifier.
+        p Insert both in a .env file on the root of the project.
+
+        h3 Ex:
+
+        ul.list-group
+           li.list-group-item CSE_ID= [your CX id]
+           li.list-group-item CSE_API_KEY= [your key]
+
+
+
+        h2  Example  usage:
+
+        ul.list-group
+            li.list-group-item #{fullUrl}/api/LOL cats/page=1
+            li.list-group-item #{fullUrl}/api/latest
+

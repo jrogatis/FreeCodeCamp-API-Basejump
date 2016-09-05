@@ -17,7 +17,8 @@ pg.connect(DATABASE_URL, (err, client) => {
     console.log('Connected to postgres! Getting tables...');
 
     router.get('/', (req, res) =>{
-      res.render('index', { title: 'Express' });
+     const fullUrl = req.protocol + '://' + req.get('host'); //+ req.originalUrl;
+      res.render('index', { fullUrl: fullUrl});
 
     });
 
@@ -39,9 +40,7 @@ pg.connect(DATABASE_URL, (err, client) => {
 
                 }, (err, resp) => {
                     if (err) console.log('An error occured', err)
-                    // Got the response from custom search
-                    //console.log('Result: ' + resp.searchInformation.formattedTotalResults);
-                    console.log(resp);
+
                     if (resp.items && resp.items.length > 0) {
                         let data =[];
                         resp.items.map( item => {
