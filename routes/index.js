@@ -52,10 +52,8 @@ pg.connect(DATABASE_URL, (err, client) => {
                                         });
 
                              client
-                                    .query(`INSERT INTO  public."imageSearchHistory" ("term" ) VALUES ('${ req.params.query}');`)
+                                    .query(`INSERT INTO  public."imageSearchHistory" ("term" ) VALUES ('${req.params.query}');`)
                                     .on('end', () => {
-                                                //res.writeHead(200, {'content-type': 'text/plain'});
-                                                //res.end(req.params.query);
                                                 res.end(JSON.stringify(data, null, 4));
                                         });
                                });
@@ -73,6 +71,8 @@ pg.connect(DATABASE_URL, (err, client) => {
                             "when"
                         FROM
                             public."imageSearchHistory"
+                        ORDER BY
+                           "index" DESC
                         LIMIT 10;`
                  )
                 .on('row', row => {
