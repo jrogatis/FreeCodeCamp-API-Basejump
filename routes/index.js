@@ -42,7 +42,7 @@ pg.connect(DATABASE_URL, (err, client) => {
                     if (err) console.log('An error occured', err)
 
                     if (resp.items && resp.items.length > 0) {
-                        let data =[];
+                        var data =[];
                         resp.items.map( item => {
                             data.push ({
                                             url: item.link,
