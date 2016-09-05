@@ -51,12 +51,13 @@ pg.connect(DATABASE_URL, (err, client) => {
                                             context: item.image.contextLink
                                         });
 
-                             client
-                                    .query(`INSERT INTO  public."imageSearchHistory" ("term" ) VALUES ('${req.params.query}');`)
-                                    .on('end', () => {
-                                                res.end(JSON.stringify(data, null, 4));
-                                        });
+
                                });
+                          client
+                                .query(`INSERT INTO  public."imageSearchHistory" ("term" ) VALUES ('${req.params.query}');`)
+                                .on('end', () => {
+                                            res.end(JSON.stringify(data, null, 4));
+                                        });
                     }
                 });
 
