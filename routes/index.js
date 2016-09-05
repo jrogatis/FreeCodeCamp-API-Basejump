@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const pg = require('pg');
-const request = require('request');
 require('dotenv').config();
 const google = require('googleapis');
 const customsearch = google.customsearch('v1');
@@ -23,27 +22,46 @@ pg.connect(DATABASE_URL, (err, client) => {
     });
 
     router.get('/api/imagesearch/:query/:page?', (req,res)=>{
-            console.log(req.params.query);
             const searchQuery = req.params.query.split(' ').join('+');
+            const page = (typeof req.params.page !== 'undefined') ? parseInt(req.params.page) : 0;
+            let offset =  page * 10;
+            offset = offset > 0 ? offset + 1 : offset;
+            const startAt = (offset > 0) ? offset : 1;
+            console.log(startAt);
 
-            console.log(process.env.CSE_ID);
-            customsearch.cse.list({ cx: process.env.CSE_ID,
-                                    q: searchQuery,
-                                    auth: process.env.CSE_API_KEY,
-                                    imgSize: 'medium',
-                                    searchType:'image' }, (err, resp) => {
-                                    if (err) {
+            customsearch.cse.list({
+                cx: process.env.CSE_ID,
+                q: searchQuery,
+                start: startAt,
+                auth: process.env.CSE_API_KEY,
+                imgSize: 'medium',
+                searchType:'image'
 
-                                            console.log('An error occured', err);
-                                        }
-                        // Got the response from custom search
-                                    console.log('Result: ' + resp.searchInformation.formattedTotalResults);
-                                    if (resp.items && resp.items.length > 0) {
-                                            console.log('First result name is ' + resp.items[0].title);
-                                    }
+                }, (err, resp) => {
+                    if (err) console.log('An error occured', err)
+                    // Got the response from custom search
+                    //console.log('Result: ' + resp.searchInformation.formattedTotalResults);
+                    console.log(resp);
+                    if (resp.items && resp.items.length > 0) {
+                        let data =[];
+                        resp.items.map( item => {
+                            data.push ({
+                                            url: item.link,
+                                            snippet: item.snippet,
+                                            thumbnail: item.image.thumbnailLink,
+                                            context: item.image.contextLink
+                                        });
 
+                             client
+                                    .query(`INSERT INTO  public."imageSearchHistory" ("term" ) VALUES ('${ req.params.query}');`)
+                                    .on('end', () => {
+                                                //res.writeHead(200, {'content-type': 'text/plain'});
+                                                //res.end(req.params.query);
+                                                res.end(JSON.stringify(data, null, 4));
+                                        });
+                               });
+                    }
                 });
-
 
     });
 
