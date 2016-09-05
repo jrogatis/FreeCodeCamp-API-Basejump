@@ -25,7 +25,7 @@ pg.connect(DATABASE_URL, (err, client) => {
     router.get('/api/imagesearch/:query/:page?', (req,res)=>{
             const searchQuery = req.params.query.split(' ').join('+');
             const page = (typeof req.params.page !== 'undefined') ? parseInt(req.params.page) : 0;
-            let offset =  page * 10;
+            var offset =  page * 10;
             offset = offset > 0 ? offset + 1 : offset;
             const startAt = (offset > 0) ? offset : 1;
             console.log(startAt);
@@ -65,7 +65,7 @@ pg.connect(DATABASE_URL, (err, client) => {
 
     router.get('/api/latest', (req,res)=>{
 
-        let ret = [];
+        var ret = [];
         client
                 .query(`SELECT
                             "term",
