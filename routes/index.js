@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pg = require('pg');
-require('dotenv').config();
+//require('dotenv').config();
 const google = require('googleapis');
 const customsearch = google.customsearch('v1');
 
