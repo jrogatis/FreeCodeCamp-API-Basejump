@@ -4,9 +4,10 @@ const pg = require('pg');
 require('dotenv').config();
 const google = require('googleapis');
 const customsearch = google.customsearch('v1');
-var multer  = require('multer')
-var upload = multer()
-
+const multer  = require('multer')
+const upload = multer()
+const autoReap  = require('multer-autoreap');
+router.use(autoReap);
 
 const DATABASE_URL = 'postgres://fidbvttodbpssc:ygSkoG5ECKgTGVI_iTlB-MD2rQ@ec2-54-243-28-22.compute-1.amazonaws.com:5432/d6vqln1g3antb3';
 
@@ -25,17 +26,8 @@ router.post('/fileSize', multer({ dest: './uploads/'}).single('upl'), (req,res)=
 	{ title: 'abc' }
 	 */
 	console.log(req.file.size); //form files
-	/* example output:
-            { fieldname: 'upl',
-              originalname: 'grumpy.png',
-              encoding: '7bit',
-              mimetype: 'image/png',
-              destination: './uploads/',
-              filename: '436ec561793aa4dc475a88e84776b1b9',
-              path: 'uploads/436ec561793aa4dc475a88e84776b1b9',
-              size: 277056 }
-	 */
-	res.status(204).end(`{size:${req.file.size}}`);
+	res.write(`{size:${req.file.size}}`);
+	res.status(204).end();
 });
 
 pg.connect(DATABASE_URL, (err, client) => {
